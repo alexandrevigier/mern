@@ -10,6 +10,8 @@ import emoji from 'node-emoji';
 import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
+import playerRouter from './routes/player';
+import dotenv from 'dotenv';
 
 const app = express();
 
@@ -51,6 +53,8 @@ app.use(
     message: 'Too many requests from this IP, please try again in 15 minutes'
   })
 );
+
+dotenv.config();
 
 // routes
 app.use('/', indexRouter);
