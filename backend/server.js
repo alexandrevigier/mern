@@ -10,8 +10,11 @@ import emoji from 'node-emoji';
 import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
+import messageRouter from './routes/message';
 import playerRouter from './routes/player';
+import userRouter from './routes/user';
 import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 
 const app = express();
 
@@ -56,8 +59,22 @@ app.use(
 
 dotenv.config();
 
+console.log(`mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`);
+mongoose.connect(
+  `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(()=>{
+    console.log('MongoDB connection success');
+  });
+
 // routes
 app.use('/', indexRouter);
+app.use('/player', playerRouter);
+app.use('/message', messageRouter);
+app.use('/user', userRouter);
 
 // setup ip address and port number
 app.set('port', process.env.PORT || 3000);

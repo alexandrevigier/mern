@@ -24,12 +24,32 @@ export const getAll = (req, res) => {
   });
 };
 
-export const getById = (req, res) => {
+export const getOneById = (req, res) => {
   Player.findById(req.params.id, (error, player) =>{
     if(error){
       res.send('an error occured while trying to get a player');
     }
 
     res.json(player);
+  });
+};
+
+export const update = (req, res) => {
+  Player.updateOne({ _id: req.params.id }, req.body, err => {
+    if (err) {
+      res.send('an error occured while trying to get players');
+    }
+
+    res.send('Player #' + req.params.id + ' has been updated');
+  });
+};
+
+export const remove = (req, res) => {
+  Player.deleteOne({ _id: req.params.id }, err => {
+    if (err) {
+      res.send('an error occured while trying to get players');
+    }
+
+    res.send('Player #' + req.params.id + ' removed');
   });
 };
