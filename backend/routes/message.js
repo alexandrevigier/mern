@@ -1,7 +1,8 @@
 import express from 'express';
-import { add } from '../controllers/messageController';
+import { add, getAll } from '../controllers/messageController';
 let messageRouter = express.Router();
 
-messageRouter.post('/', add);
+messageRouter.post('/message/add', add);
+messageRouter.get('/message', getAll);
 
 export default messageRouter;

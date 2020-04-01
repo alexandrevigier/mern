@@ -1,22 +1,32 @@
 import mongoose from 'mongoose';
 import messageSchema from '../models/messageModel';
-import userSchema from '.../models/userModel';
+import userSchema from '../models/userModel';
 
-const Message = mongoose.model('Messages', messageSchema);
-const User = mongoose.model('User',userSchema);
+const Message = mongoose.model('Message', messageSchema);
+const User = mongoose.model('User', userSchema);
 
 export const add = async (req, res) => {
-  let user = await User.findOne({ username: req.body.username });
+  let user = await User.findOne({ userName: req.body.userName });
 
   if (!user) {
-    user = new User({ username: req.body.username });
+    user = new User({ userName: req.body.userName});
   }
 
-  let newMessage = new Message({ message: req.body.message });
-  await newMessage.save();
+  var message = new Message({ msg: req.body.msg});
+  await message.save();
 
-  user.messages.push(newMessage);
+  user.messages.push(message);
   user = await user.save();
 
-  res.send(newMessage);
+  res.send(user);
+};
+
+export const getAll = (req, res) => {
+  Message.find({}, (err, messages) => {
+    if (err) {
+      res.send('an error occured while trying to get messages');
+    }
+
+    res.send(messages);
+  });
 };
